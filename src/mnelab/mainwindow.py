@@ -14,6 +14,7 @@ from sys import version_info
 import mne
 import numpy as np
 from mne import channel_type
+from pybvrf import read_bvrf_header
 from PySide6.QtCore import QEvent, QMetaObject, QModelIndex, Qt, QUrl, Slot
 from PySide6.QtGui import QAction, QDesktopServices, QIcon, QKeySequence
 from PySide6.QtWidgets import (
@@ -33,6 +34,7 @@ from mnelab.dialogs.channel_stats import ChannelStats
 from mnelab.io import writers
 from mnelab.io.mat import parse_mat
 from mnelab.io.npy import parse_npy
+from mnelab.io.readers import read_raw, split_name_ext
 from mnelab.io.xdf import get_xml, list_chunks
 from mnelab.model import InvalidAnnotationsError, LabelsNotFoundError, Model
 from mnelab.settings import SettingsDialog, read_settings, write_settings
@@ -670,6 +672,35 @@ class MainWindow(QMainWindow):
                     self.model.load(
                         fname, ignore_marker_types=dialog.ignore_marker_types
                     )
+            elif ext in (".bvrh", ".bvrd", ".bvrm", ".bvri"):
+                try:
+                    header = read_bvrf_header(Path(fname).with_suffix(".bvrh"))
+                    if header["n_participants"] > 1:
+                        # get participant IDs
+                        participants = [
+                            p["Id"] for p in header["yaml_header"]["Participants"]
+                        ]
+                        dialog = BVRFDialog(self, participants)
+                        if dialog.exec():
+                            selected = dialog.selected_participants
+                            if dialog.create_separate:
+                                data_dict = read_raw(
+                                    fname, participants=selected, split=True
+                                )
+                                for pid, raw in data_dict.items():
+                                    name, _ = split_name_ext(fname)
+                                    self.model.load_raw(
+                                        raw, fname, name=f"{name} ({pid})"
+                                    )
+                            else:
+                                self.model.load(
+                                    fname, participants=selected, split=False
+                                )
+                    else:
+                        # single participant, load directly
+                        self.model.load(fname)
+                except Exception as e:
+                    QMessageBox.critical(self, "Error loading BVRF file", str(e))
             else:  # all other file formats
                 try:
                     self.model.load(fname)
@@ -1076,9 +1107,9 @@ class MainWindow(QMainWindow):
         """Run ICA calculation."""
 
         methods = ["Infomax"]
-        if have["picard"]:
+        if have["python-picard"]:
             methods.insert(0, "Picard")
-        if have["sklearn"]:
+        if have["scikit-learn"]:
             methods.append("FastICA")
 
         dialog = RunICADialog(self, self.model.current["data"].info["nchan"], methods)
