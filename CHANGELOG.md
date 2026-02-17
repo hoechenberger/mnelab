@@ -1,4 +1,4 @@
-## [UNRELEASED] - YYYY-MM-DD
+## [UNRELEASED] · YYYY-MM-DD
 ### 🔧 Fixed
 - Fix macOS app icon to support light and dark mode ([#553](https://github.com/cbrnr/mnelab/pull/553) by [Clemens Brunner](https://github.com/cbrnr))
 - Prevent MNE-Qt-Browser from changing the app icon on macOS ([#554](https://github.com/cbrnr/mnelab/pull/554) by [Clemens Brunner](https://github.com/cbrnr))
@@ -7,7 +7,7 @@
 - Force epoch indexes to start at 0 and be consecutive instead of using the original event indexes ([#555](https://github.com/cbrnr/mnelab/pull/555) by [Clemens Brunner](https://github.com/cbrnr))
 - Make XDF chunk dialog resizable and show prettified XML for XML chunk contents ([#557](https://github.com/cbrnr/mnelab/pull/557) by [Clemens Brunner](https://github.com/cbrnr))
 
-## [1.1.0] - 2026-01-23
+## [1.1.0] · 2026-01-23
 ### ✨ Added
 - Add dialog to create annotations from events or between specific events ([#534](https://github.com/cbrnr/mnelab/pull/534) and [#539](https://github.com/cbrnr/mnelab/pull/539) by [Fabian Schellander](https://github.com/SchellanderF))
 - Format history (using black/isort) ([#540](https://github.com/cbrnr/mnelab/pull/540) by [Clemens Brunner](https://github.com/cbrnr))
@@ -24,12 +24,12 @@
 - Disable "Counts" button in Events dialog when no events are present ([#529](https://github.com/cbrnr/mnelab/pull/529) by [Fabian Schellander](https://github.com/SchellanderF))
 - Validate inputs in the "Drop bad epochs" dialog ([#532](https://github.com/cbrnr/mnelab/pull/532) by [Clemens Brunner](https://github.com/cbrnr))
 
-## [1.0.8] - 2025-11-06
+## [1.0.8] · 2025-11-06
 ### 🔧 Fixed
 - Fix ICA calculation in standalone releases ([#525](https://github.com/cbrnr/mnelab/pull/525) by [Clemens Brunner](https://github.com/cbrnr))
 - Fix opening .mat and .xdf files from the command line ([#527](https://github.com/cbrnr/mnelab/pull/527) by [Clemens Brunner](https://github.com/cbrnr))
 
-## [1.0.7] - 2025-11-03
+## [1.0.7] · 2025-11-03
 ### ✨ Added
 - Add Python 3.14 support ([#517](https://github.com/cbrnr/mnelab/pull/517) by [Clemens Brunner](https://github.com/cbrnr))
 
@@ -37,29 +37,29 @@
 - Fix issue where NaNs were inserted into all streams instead of only those with missing data ([#518](https://github.com/cbrnr/mnelab/pull/518) by [Clemens Brunner](https://github.com/cbrnr))
 - Fix performance issue when using the Qt plotting backend on macOS ([#519](https://github.com/cbrnr/mnelab/pull/519) by [Clemens Brunner](https://github.com/cbrnr))
 
-## [1.0.6] - 2025-10-28
+## [1.0.6] · 2025-10-28
 ### ✨ Added
 - Support for writing Biosemi Data Format (BDF) files ([#513](https://github.com/cbrnr/mnelab/pull/513) by [Clemens Brunner](https://github.com/cbrnr))
 - Support for reading XDF files with gaps/interruptions in the data ([#510](https://github.com/cbrnr/mnelab/pull/510) by [Clemens Brunner](https://github.com/cbrnr), [Benedikt Ehinger](https://github.com/behinger), and [Benedikt Klöckl](https://github.com/bkloeckl))
 
-## [1.0.5] - 2025-07-29
+## [1.0.5] · 2025-07-29
 ### 🔧 Fixed
 - Fix settings file locations that could have been inconsistent and incorrect when using MNE-Qt-Browser as a plotting backend ([#506](https://github.com/cbrnr/mnelab/pull/506) by [Clemens Brunner](https://github.com/cbrnr))
 - Fix MNE-Qt-Browser not working as a backend in standalone releases ([#507](https://github.com/cbrnr/mnelab/pull/507) by [Clemens Brunner](https://github.com/cbrnr))
 
-## [1.0.4] - 2025-07-28
+## [1.0.4] · 2025-07-28
 ### ✨ Added
 - Sign and notarize macOS app ([#505](https://github.com/cbrnr/mnelab/pull/505) by [Clemens Brunner](https://github.com/cbrnr))
 
 ### 🔧 Fixed
 - Fix issues with the standalone versions ([#503](https://github.com/cbrnr/mnelab/pull/503) by [Clemens Brunner](https://github.com/cbrnr))
 
-## [1.0.3] - 2025-07-15
+## [1.0.3] · 2025-07-15
 ### ✨ Added
 - Add infrastructure to create standalone releases ([#481](https://github.com/cbrnr/mnelab/pull/481) by [Clemens Brunner](https://github.com/cbrnr))
 - Add clickable links to MNELAB and MNE-Python settings files in the Settings dialog ([#500](https://github.com/cbrnr/mnelab/pull/500) by [Clemens Brunner](https://github.com/cbrnr))
 
-## [1.0.2] - 2025-06-25
+## [1.0.2] · 2025-06-25
 ### ✨ Added
 - Add PSD dialog with options to set frequency bounds, show bad channels (in red) or exclude them, and use spatial colors if a montage is set ([#493](https://github.com/cbrnr/mnelab/pull/493) by [Clemens Brunner](https://github.com/cbrnr))
 
@@ -69,7 +69,7 @@
 ### 🔧 Fixed
 - Fix cutoff frequency labels in filter dialog ([#491](https://github.com/cbrnr/mnelab/pull/491) by [Clemens Brunner](https://github.com/cbrnr))
 
-## [1.0.1] - 2025-05-09
+## [1.0.1] · 2025-05-09
 ### ✨ Added
 - Add counts dialog for events and annotations to show the number of unique event/annotation types ([#483](https://github.com/cbrnr/mnelab/pull/483) by [Clemens Brunner](https://github.com/cbrnr))
 

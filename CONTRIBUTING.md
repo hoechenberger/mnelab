@@ -71,7 +71,7 @@ Follow these steps to make a new [PyPI](https://pypi.org/project/mnelab/) releas
 This concludes the new release. Now prepare the source for the next planned release as follows:
 
 1. Update the `version` field to the next planned release and append `.dev0`
-2. Start a new section at the top of `CHANGELOG.md` titled `## [UNRELEASED] - YYYY-MM-DD`
+2. Start a new section at the top of `CHANGELOG.md` titled `## [UNRELEASED] · YYYY-MM-DD`
 
 Don't forget to push these changes!
 
