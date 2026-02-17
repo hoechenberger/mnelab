@@ -4,8 +4,8 @@
 
 We recommend our standalone installers currently available for macOS and Windows:
 
-- [MNELAB 1.1.0 (macOS)](https://github.com/cbrnr/mnelab/releases/download/v1.1.0/MNELAB-1.1.0.dmg)
-- [MNELAB 1.1.0 (Windows)](https://github.com/cbrnr/mnelab/releases/download/v1.1.0/MNELAB-1.1.0.exe)
+- [MNELAB 1.2.0 (macOS)](https://github.com/cbrnr/mnelab/releases/download/v1.2.0/MNELAB-1.2.0.dmg)
+- [MNELAB 1.2.0 (Windows)](https://github.com/cbrnr/mnelab/releases/download/v1.2.0/MNELAB-1.2.0.exe)
 
 
 ## Running MNELAB
