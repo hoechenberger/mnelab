@@ -1,3 +1,5 @@
+## [UNRELEASED] · YYYY-MM-DD
+
 ## [1.2.0] · 2026-02-17
 ### ✨ Added
 - Add support for BVRF import via PyBVRF ([#560](https://github.com/cbrnr/mnelab/pull/560) by [Clemens Brunner](https://github.com/cbrnr))
