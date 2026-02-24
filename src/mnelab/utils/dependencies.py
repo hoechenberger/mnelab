@@ -18,7 +18,7 @@ required = [
     "isort",
     "onnx",
 ]
-optional = ["mne-qt-browser", "picard", "sklearn"]
+optional = ["autoreject", "mne-qt-browser", "picard", "sklearn"]
 
 _distribution_names = {
     "python-picard": "picard",

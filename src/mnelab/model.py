@@ -57,6 +57,12 @@ class Model:
             "from mnelab.io import read_raw",
             "from mnelab.utils import annotations_between_events, run_iclabel",
             "import numpy as np",
+            "from mnelab.utils import ("
+            "detect_extreme_values,"
+            "detect_kurtosis,"
+            "detect_peak_to_peak,"
+            "detect_with_autoreject,"
+            ")"
             "",
             "datasets = []",
         ]
@@ -665,6 +671,11 @@ class Model:
         self.current["data"].drop_bad(reject, flat)
         self.current["name"] += " (dropped bad epochs)"
         self.history.append(f"data.drop_bad({reject}, {flat})")
+
+    @data_changed
+    def drop_detected_artifacts(self, indices):
+        self.current["data"].drop(indices, reason="ARTIFACT_DETECTION")
+        self.current["name"] += " (dropped detected epochs)"
 
     @data_changed
     def convert_od(self):

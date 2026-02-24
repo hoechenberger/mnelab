@@ -74,6 +74,9 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("MNELAB")
         sys.excepthook = self._excepthook
 
+        # supress MNE logging output
+        mne.set_log_level("ERROR")
+
         # restore settings
         settings = read_settings()
         self.recent = settings["recent"]  # list of recent files
@@ -318,6 +321,10 @@ class MainWindow(QMainWindow):
         self.actions["drop_bad_epochs"] = tools_menu.addAction(
             "Drop bad epochs...",
             self.drop_bad_epochs,
+        )
+        self.actions["artifact_detection"] = tools_menu.addAction(
+            "Artifact detection...",
+            self.artifact_detection,
         )
 
         view_menu = self.menuBar().addMenu("&View")
@@ -564,6 +571,9 @@ class MainWindow(QMainWindow):
                 enabled and self.model.current["dtype"] == "raw"
             )
             self.actions["drop_bad_epochs"].setEnabled(
+                enabled and events and self.model.current["dtype"] == "epochs"
+            )
+            self.actions["artifact_detection"].setEnabled(
                 enabled and events and self.model.current["dtype"] == "epochs"
             )
             self.actions["clear_montage"].setEnabled(
@@ -1329,6 +1339,21 @@ class MainWindow(QMainWindow):
                 return
             self.auto_duplicate()
             self.model.drop_bad_epochs(reject, flat)
+
+    def artifact_detection(self):
+        """Apply artifact detection."""
+        data = self.model.current["data"]
+
+        dialog = ArtifactDetectionDialog(self, data)
+        if dialog.exec():
+            bad_epochs = dialog.get_bad_epochs()
+            if not bad_epochs:
+                return
+
+            self.auto_duplicate()
+            self.model.drop_detected_artifacts(bad_epochs)
+            self.data_changed()
+            self.model.history.append(dialog.get_history_code())
 
     def convert_od(self):
         """Convert to optical density."""

@@ -2,6 +2,12 @@
 #
 # License: BSD (3-clause)
 
+from mnelab.utils.artifact_detection import (
+    find_bad_epochs_amplitude,
+    find_bad_epochs_autoreject,
+    find_bad_epochs_kurtosis,
+    find_bad_epochs_ptp,
+)
 from mnelab.utils.dependencies import have
 from mnelab.utils.iclabel import run_iclabel
 from mnelab.utils.syntax import PythonHighlighter, format_code

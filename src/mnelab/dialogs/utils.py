@@ -121,8 +121,12 @@ class NumberSortProxyModel(QSortFilterProxyModel):
     """Helper class to sort columns with numerical data."""
 
     def lessThan(self, left, right):
-        left_data = self.sourceModel().data(left, Qt.UserRole)
-        right_data = self.sourceModel().data(right, Qt.UserRole)
+        left_data = self.sourceModel().data(
+            left, Qt.UserRole
+        ) or self.sourceModel().data(left, Qt.CheckStateRole)
+        right_data = self.sourceModel().data(
+            right, Qt.UserRole
+        ) or self.sourceModel().data(right, Qt.CheckStateRole)
 
         if left_data is None:
             return True
