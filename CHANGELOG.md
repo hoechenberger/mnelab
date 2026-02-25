@@ -1,4 +1,4 @@
-## [UNRELEASED] · YYYY-MM-DD
+## [1.3.1] · 2026-02-25
 ### 🔧 Fixed
 - Fix PyBVRF import in standalone releases ([#564](https://github.com/cbrnr/mnelab/pull/564)) by [Clemens Brunner](https://github.com/cbrnr))
 
