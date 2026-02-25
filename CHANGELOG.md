@@ -1,4 +1,4 @@
-## [UNRELEASED] · YYYY-MM-DD
+## [1.3.0] · 2026-02-25
 ### ✨ Added
 - Add dialog for automatic epoch artifact detection with configurable methods ([#558](https://github.com/cbrnr/mnelab/pull/558) by [Fabian Schellander](https://github.com/SchellanderF))
 - Add MNE log messages viewer to history dialog ([#561](https://github.com/cbrnr/mnelab/pull/561) by [Clemens Brunner](https://github.com/cbrnr))
