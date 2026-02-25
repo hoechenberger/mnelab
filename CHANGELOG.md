@@ -1,3 +1,5 @@
+## [UNRELEASED] · YYYY-MM-DD
+
 ## [1.3.0] · 2026-02-25
 ### ✨ Added
 - Add dialog for automatic epoch artifact detection with configurable methods ([#558](https://github.com/cbrnr/mnelab/pull/558) by [Fabian Schellander](https://github.com/SchellanderF))
