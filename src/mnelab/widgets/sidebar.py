@@ -36,7 +36,7 @@ class SidebarTableWidget(QTableWidget):
         self.setShowGrid(False)
         self.drop_row = -1
 
-        self.horizontalHeader().hide()
+        self.setHorizontalHeaderLabels(["#", "Name", ""])
         self.verticalHeader().hide()
         self.horizontalHeader().setStretchLastSection(False)
         self.horizontalHeader().setSectionResizeMode(0, QHeaderView.Fixed)
@@ -44,6 +44,13 @@ class SidebarTableWidget(QTableWidget):
         self.horizontalHeader().setSectionResizeMode(2, QHeaderView.Fixed)
         self.setColumnWidth(2, 20)
         self.resizeColumnToContents(0)
+
+        self.setStyleSheet("""
+            QTableWidget::item:selected {
+                background-color: palette(highlight);
+                color: palette(highlighted-text);
+            }
+        """)
 
         self.setMouseTracking(True)
         self.viewport().installEventFilter(self)

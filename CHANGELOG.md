@@ -1,6 +1,7 @@
 ## [UNRELEASED] · YYYY-MM-DD
 ### 🔧 Fixed
 - Fix toolbar button hover effects on macOS ([#565](https://github.com/cbrnr/mnelab/pull/565) by [Clemens Brunner](https://github.com/cbrnr))
+- Improve sidebar styling ([#573](https://github.com/cbrnr/mnelab/pull/573) by [Richard Höchenberger](https://github.com/hoechenberger))
 
 ## [1.3.1] · 2026-02-25
 ### 🔧 Fixed
