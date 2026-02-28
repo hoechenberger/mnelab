@@ -102,6 +102,8 @@ class SidebarTableWidget(QTableWidget):
         header = SpanningHeaderView(Qt.Horizontal, span_start=1, span_count=3, parent=self)
         self.setHorizontalHeader(header)
         self.setHorizontalHeaderLabels(["#", "Dataset", "", ""])
+        self.horizontalHeaderItem(0).setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        self.horizontalHeaderItem(1).setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         self.verticalHeader().hide()
         self.horizontalHeader().setStretchLastSection(False)
         self.horizontalHeader().setSectionResizeMode(0, QHeaderView.Fixed)
