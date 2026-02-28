@@ -2,8 +2,16 @@
 #
 # License: BSD (3-clause)
 
-from PySide6.QtGui import QKeySequence
-from PySide6.QtWidgets import QGridLayout, QLabel, QSizePolicy, QVBoxLayout, QWidget
+from PySide6.QtCore import QEvent, QTimer
+from PySide6.QtGui import QGuiApplication, QIcon, QKeySequence
+from PySide6.QtWidgets import (
+    QGridLayout,
+    QLabel,
+    QSizePolicy,
+    QToolButton,
+    QVBoxLayout,
+    QWidget,
+)
 
 dev_label = (
     '<p align="right"><font color="red"><small>Development Version</small></font></p>'
@@ -57,6 +65,18 @@ class InfoWidget(QWidget):
         from .. import __version__
 
         super().__init__()
+        self._copy_btn = None
+        self._hovered = False
+        self._copy_icon = QIcon.fromTheme("copy-path")
+        self._check_icon = QIcon.fromTheme("copy-done")
+        self._hide_timer = QTimer(self)
+        self._hide_timer.setSingleShot(True)
+        self._hide_timer.setInterval(50)
+        self._hide_timer.timeout.connect(self._hide_copy_btn)
+        self._restore_timer = QTimer(self)
+        self._restore_timer.setSingleShot(True)
+        self._restore_timer.setInterval(1500)
+        self._restore_timer.timeout.connect(self._restore_copy_icon)
         vbox = QVBoxLayout(self)
         self.grid = QGridLayout()
         self.grid.setColumnStretch(1, 1)
@@ -83,9 +103,62 @@ class InfoWidget(QWidget):
                 right.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Fixed)
                 self.grid.addWidget(left, row, 0)
                 self.grid.addWidget(right, row, 1)
+                if key == "File name" and value != "-":
+                    btn = QToolButton()
+                    btn.setIcon(QIcon())  # empty until hovered
+                    btn.setAutoRaise(True)
+                    btn.setStyleSheet("""
+                        QToolButton {
+                            background: transparent;
+                            border: none;
+                        }
+                        QToolButton:hover {
+                            background: rgba(128, 128, 128, 0.2);
+                            border-radius: 4px;
+                        }
+                        QToolButton:pressed {
+                            background: rgba(128, 128, 128, 0.35);
+                            border-radius: 4px;
+                        }
+                    """)
+                    btn.setToolTip("Copy path to clipboard")
+                    btn.clicked.connect(
+                        lambda checked=False, v=str(value): self._on_copy(v)
+                    )
+                    right.installEventFilter(self)
+                    btn.installEventFilter(self)
+                    self._copy_btn = btn
+                    self.grid.addWidget(btn, row, 2)
+
+    def _on_copy(self, path):
+        QGuiApplication.clipboard().setText(path)
+        if self._copy_btn:
+            self._restore_timer.stop()
+            self._copy_btn.setIcon(self._check_icon)
+            self._restore_timer.start()
+
+    def _restore_copy_icon(self):
+        if self._copy_btn:
+            self._copy_btn.setIcon(self._copy_icon if self._hovered else QIcon())
+
+    def eventFilter(self, obj, event):
+        if event.type() == QEvent.Enter:
+            self._hovered = True
+            self._hide_timer.stop()
+            if self._copy_btn and not self._restore_timer.isActive():
+                self._copy_btn.setIcon(self._copy_icon)
+        elif event.type() == QEvent.Leave:
+            self._hovered = False
+            self._hide_timer.start()
+        return super().eventFilter(obj, event)
+
+    def _hide_copy_btn(self):
+        if self._copy_btn and not self._restore_timer.isActive():
+            self._copy_btn.setIcon(QIcon())
 
     def clear(self):
         """Clear all values."""
+        self._copy_btn = None
         item = self.grid.takeAt(0)
         while item:
             item.widget().deleteLater()
