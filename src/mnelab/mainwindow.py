@@ -524,6 +524,7 @@ class MainWindow(QMainWindow):
 
             self.sidebar.style_rows()
             self.sidebar.selectRow(self.model.index)
+            self.sidebar.setFocus()
         else:
             self.sidebar.hide()
 
