@@ -4,7 +4,7 @@
 
 import sys
 
-from PySide6.QtCore import QEvent, QRectF, Qt, Signal
+from PySide6.QtCore import QEvent, QRect, QRectF, Qt, Signal
 from PySide6.QtGui import QColor, QIcon, QPainter
 from PySide6.QtWidgets import (
     QAbstractItemView,
@@ -60,6 +60,24 @@ class TypeBadgeDelegate(QStyledItemDelegate):
         return hint
 
 
+class SpanningHeaderView(QHeaderView):
+    """Horizontal header where a contiguous range of sections is painted as one."""
+
+    def __init__(self, orientation, span_start=0, span_count=1, parent=None):
+        super().__init__(orientation, parent)
+        self._span_start = span_start
+        self._span_count = span_count
+
+    def paintSection(self, painter, rect, logical_index):
+        span_cols = range(self._span_start, self._span_start + self._span_count)
+        if logical_index in span_cols and logical_index != self._span_start:
+            return
+        if logical_index == self._span_start:
+            total_width = sum(self.sectionSize(self._span_start + i) for i in range(self._span_count))
+            rect = QRect(rect.x(), rect.y(), total_width, rect.height())
+        super().paintSection(painter, rect, logical_index)
+
+
 class SidebarTableWidget(QTableWidget):
     rowsMoved = Signal(int, int)  # custom signal emitted when drag-and-dropping rows
 
@@ -81,7 +99,9 @@ class SidebarTableWidget(QTableWidget):
         self.setShowGrid(False)
         self.drop_row = -1
 
-        self.setHorizontalHeaderLabels(["#", "Dataset", ""])
+        header = SpanningHeaderView(Qt.Horizontal, span_start=1, span_count=3, parent=self)
+        self.setHorizontalHeader(header)
+        self.setHorizontalHeaderLabels(["#", "Dataset", "", ""])
         self.verticalHeader().hide()
         self.horizontalHeader().setStretchLastSection(False)
         self.horizontalHeader().setSectionResizeMode(0, QHeaderView.Fixed)
