@@ -4,16 +4,16 @@
 
 import sys
 
-from PySide6.QtCore import QEvent, QRect, QRectF, Qt, Signal
+from PySide6.QtCore import QEvent, QRect, QRectF, QSize, Qt, Signal
 from PySide6.QtGui import QColor, QIcon, QPainter
 from PySide6.QtWidgets import (
     QAbstractItemView,
     QFrame,
     QHeaderView,
-    QPushButton,
     QStyledItemDelegate,
     QTableWidget,
     QTableWidgetItem,
+    QToolButton,
 )
 
 ROW_HEIGHT = 30
@@ -111,7 +111,7 @@ class SidebarTableWidget(QTableWidget):
         self.horizontalHeader().setSectionResizeMode(2, QHeaderView.Fixed)
         self.horizontalHeader().setSectionResizeMode(3, QHeaderView.Fixed)
         self.setColumnWidth(2, 56)
-        self.setColumnWidth(3, 20)
+        self.setColumnWidth(3, 22)
         self.resizeColumnToContents(0)
         self.setItemDelegateForColumn(2, TypeBadgeDelegate(self))
 
@@ -232,10 +232,13 @@ class SidebarTableWidget(QTableWidget):
     def showCloseButton(self, row_index):
         for i in range(self.rowCount()):
             if i == row_index:
-                delete_button = QPushButton(self)
+                delete_button = QToolButton(self)
                 delete_button.setIcon(QIcon.fromTheme("close-data"))
+                delete_button.setIconSize(QSize(20, 20))
+                delete_button.setAutoRaise(True)
+                delete_button.setToolTip("Remove dataset")
                 delete_button.setStyleSheet(
-                    "background: transparent; border: none; margin: auto;"
+                    "QToolButton { background: transparent; border: none; }"
                 )
                 delete_button.clicked.connect(
                     lambda _, index=row_index: self.parent.model.remove_data(index)
