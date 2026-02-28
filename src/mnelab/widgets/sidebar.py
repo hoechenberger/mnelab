@@ -36,7 +36,7 @@ class SidebarTableWidget(QTableWidget):
         self.setShowGrid(False)
         self.drop_row = -1
 
-        self.setHorizontalHeaderLabels(["#", "Name", ""])
+        self.setHorizontalHeaderLabels(["#", "Filename", ""])
         self.verticalHeader().hide()
         self.horizontalHeader().setStretchLastSection(False)
         self.horizontalHeader().setSectionResizeMode(0, QHeaderView.Fixed)
