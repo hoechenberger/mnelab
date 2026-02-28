@@ -426,7 +426,9 @@ class MainWindow(QMainWindow):
         self.sidebar.hide()
         self.sidebar.rowsMoved.connect(self._sidebar_move_event)
         self.sidebar.itemDelegate().commitData.connect(self._sidebar_edit_event)
-        self.sidebar.cellClicked.connect(self._update_data)
+        self.sidebar.currentCellChanged.connect(
+            lambda row, col, *_: self._update_data(row, col)
+        )
 
         splitter = QSplitter()
         splitter.addWidget(self.sidebar)
@@ -507,6 +509,9 @@ class MainWindow(QMainWindow):
         # update sidebar
         if len(self.model.data) > 0:
             self.sidebar.show()
+            # Block signals during rebuild: setRowCount(0) would otherwise
+            # emit currentCellChanged with row=-1, corrupting model.index.
+            self.sidebar.blockSignals(True)
             self.sidebar.setRowCount(0)
             self.sidebar.setRowCount(len(self.model.names))
             self.sidebar.setColumnCount(4)
@@ -524,6 +529,7 @@ class MainWindow(QMainWindow):
 
             self.sidebar.style_rows()
             self.sidebar.selectRow(self.model.index)
+            self.sidebar.blockSignals(False)
             self.sidebar.setFocus()
         else:
             self.sidebar.hide()
