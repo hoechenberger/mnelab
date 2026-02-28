@@ -665,7 +665,6 @@ class Model:
         self.current["data"] = epochs
         self.current["dtype"] = "epochs"
         self.current["events"] = self.current["data"].events
-        self.current["name"] += " (epoched)"
 
     @data_changed
     def drop_bad_epochs(self, reject, flat):

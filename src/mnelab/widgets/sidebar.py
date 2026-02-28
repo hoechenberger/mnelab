@@ -2,17 +2,60 @@
 #
 # License: BSD (3-clause)
 
-from PySide6.QtCore import QEvent, Qt, Signal
+from PySide6.QtCore import QEvent, QRectF, Qt, Signal
 from PySide6.QtGui import QColor, QIcon, QPainter
 from PySide6.QtWidgets import (
     QAbstractItemView,
     QFrame,
     QHeaderView,
     QPushButton,
+    QStyledItemDelegate,
     QTableWidget,
+    QTableWidgetItem,
 )
 
-ROW_HEIGHT = 10
+ROW_HEIGHT = 30
+
+DTYPE_COLORS = {
+    "raw": ("#2563EB", "#FFFFFF"),     # blue-600 bg, white text
+    "epochs": ("#92400E", "#FFFFFF"),  # amber-800 bg, white text
+}
+
+
+class TypeBadgeDelegate(QStyledItemDelegate):
+    """Renders a rounded-rectangle badge for the data type column."""
+
+    def paint(self, painter, option, index):
+        dtype = index.data(Qt.DisplayRole)
+        if not dtype:
+            return
+        bg_hex, fg_hex = DTYPE_COLORS.get(dtype.lower(), ("#6B7280", "#FFFFFF"))
+        label = dtype.capitalize()
+
+        painter.save()
+        painter.setRenderHint(QPainter.Antialiasing)
+
+        rect = option.rect
+        pad_y = 5
+        badge_h = rect.height() - 2 * pad_y
+        badge_rect = QRectF(rect.x() + 2, rect.y() + pad_y, rect.width() - 4, badge_h)
+
+        painter.setPen(Qt.NoPen)
+        painter.setBrush(QColor(bg_hex))
+        painter.drawRoundedRect(badge_rect, badge_h / 2, badge_h / 2)
+
+        font = painter.font()
+        font.setPointSizeF(max(6.0, font.pointSizeF() - 1))
+        painter.setFont(font)
+        painter.setPen(QColor(fg_hex))
+        painter.drawText(badge_rect, Qt.AlignCenter, label)
+
+        painter.restore()
+
+    def sizeHint(self, option, index):
+        hint = super().sizeHint(option, index)
+        hint.setWidth(56)
+        return hint
 
 
 class SidebarTableWidget(QTableWidget):
@@ -32,7 +75,7 @@ class SidebarTableWidget(QTableWidget):
         self.setFrameStyle(QFrame.NoFrame)
         self.setFocusPolicy(Qt.NoFocus)
         self.setEditTriggers(QAbstractItemView.DoubleClicked)
-        self.setColumnCount(3)
+        self.setColumnCount(4)
         self.setShowGrid(False)
         self.drop_row = -1
 
@@ -42,8 +85,11 @@ class SidebarTableWidget(QTableWidget):
         self.horizontalHeader().setSectionResizeMode(0, QHeaderView.Fixed)
         self.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
         self.horizontalHeader().setSectionResizeMode(2, QHeaderView.Fixed)
-        self.setColumnWidth(2, 20)
+        self.horizontalHeader().setSectionResizeMode(3, QHeaderView.Fixed)
+        self.setColumnWidth(2, 56)
+        self.setColumnWidth(3, 20)
         self.resizeColumnToContents(0)
+        self.setItemDelegateForColumn(2, TypeBadgeDelegate(self))
 
         self.setMouseTracking(True)
         self.viewport().installEventFilter(self)
@@ -114,6 +160,14 @@ class SidebarTableWidget(QTableWidget):
         else:
             event.ignore()
 
+    def set_dtype(self, row, dtype):
+        """Set the data type badge for the given row."""
+        item = QTableWidgetItem(dtype)
+        item.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable)
+        item.setTextAlignment(Qt.AlignCenter)
+        item.setToolTip(f"Data type: {dtype.capitalize()}")
+        self.setItem(row, 2, item)
+
     def style_rows(self):
         self.resizeColumnToContents(0)
         for i in range(self.rowCount()):
@@ -124,6 +178,8 @@ class SidebarTableWidget(QTableWidget):
             self.item(i, 0).setFlags(self.item(i, 0).flags() & ~Qt.ItemIsEditable)
             self.item(i, 1).setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
             self.item(i, 1).setFlags(self.item(i, 1).flags() | Qt.ItemIsEditable)
+            if self.item(i, 2) is not None:
+                self.item(i, 2).setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable)
 
     def update_vertical_header(self):
         row_count = self.rowCount()
@@ -152,6 +208,6 @@ class SidebarTableWidget(QTableWidget):
                 delete_button.clicked.connect(
                     lambda _, index=row_index: self.parent.model.remove_data(index)
                 )
-                self.setCellWidget(row_index, 2, delete_button)
+                self.setCellWidget(row_index, 3, delete_button)
             else:
-                self.removeCellWidget(i, 2)
+                self.removeCellWidget(i, 3)

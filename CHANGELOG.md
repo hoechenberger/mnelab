@@ -1,4 +1,7 @@
 ## [UNRELEASED] · YYYY-MM-DD
+### ✨ Added
+- The dataset panel now contains badges that help you easily recognize the data type of each entry ([#576](https://github.com/cbrnr/mnelab/pull/576) by [Richard Höchenberger](https://github.com/hoechenberger))
+
 ### 🔧 Fixed
 - Fix toolbar button hover effects on macOS ([#565](https://github.com/cbrnr/mnelab/pull/565) by [Clemens Brunner](https://github.com/cbrnr))
 
