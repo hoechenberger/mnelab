@@ -455,6 +455,9 @@ class MainWindow(QMainWindow):
         self.data_changed()
 
     def _excepthook(self, type, value, traceback_):
+        if type is KeyboardInterrupt:
+            self.close()
+            return
         exception_text = str(value)
         traceback_text = "".join(traceback.format_exception(type, value, traceback_))
         print(traceback_text, file=sys.stderr)

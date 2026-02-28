@@ -24,10 +24,11 @@ def main():
     mp.freeze_support()
     mp.set_start_method("spawn", force=True)
 
+    import signal
     from pathlib import Path
 
     import matplotlib
-    from PySide6.QtCore import QEvent, QLoggingCategory, Qt
+    from PySide6.QtCore import QEvent, QLoggingCategory, Qt, QTimer
     from PySide6.QtGui import QIcon
     from PySide6.QtWidgets import QApplication
 
@@ -71,4 +72,14 @@ def main():
         for f in sys.argv[1:]:
             model.view.open_data(f)
     model.view.show()
+
+    # Allow Ctrl-C in the terminal to shut the app down gracefully. Qt's C++
+    # event loop doesn't yield to Python's signal machinery on its own, so a
+    # short-interval no-op timer is used to wake the loop periodically and let
+    # Python check for pending signals.
+    signal.signal(signal.SIGINT, lambda *_: app.quit())
+    sigint_timer = QTimer()
+    sigint_timer.start(200)
+    sigint_timer.timeout.connect(lambda: None)
+
     sys.exit(app.exec())
