@@ -17,7 +17,7 @@ from PySide6.QtWidgets import (
 ROW_HEIGHT = 30
 
 DTYPE_COLORS = {
-    "raw": ("#2563EB", "#FFFFFF"),     # blue-600 bg, white text
+    "raw": ("#2563EB", "#FFFFFF"),  # blue-600 bg, white text
     "epochs": ("#92400E", "#FFFFFF"),  # amber-800 bg, white text
 }
 
