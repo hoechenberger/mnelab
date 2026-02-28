@@ -2,6 +2,8 @@
 #
 # License: BSD (3-clause)
 
+import sys
+
 from PySide6.QtCore import QEvent, QRectF, Qt, Signal
 from PySide6.QtGui import QColor, QIcon, QPainter
 from PySide6.QtWidgets import (
@@ -91,12 +93,13 @@ class SidebarTableWidget(QTableWidget):
         self.resizeColumnToContents(0)
         self.setItemDelegateForColumn(2, TypeBadgeDelegate(self))
 
-        self.setStyleSheet("""
-            QTableWidget::item:selected {
-                background-color: palette(highlight);
-                color: palette(highlighted-text);
-            }
-        """)
+        if sys.platform == "darwin":
+            self.setStyleSheet("""
+                QTableWidget::item:selected {
+                    background-color: palette(highlight);
+                    color: palette(highlighted-text);
+                }
+            """)
 
         self.setMouseTracking(True)
         self.viewport().installEventFilter(self)
