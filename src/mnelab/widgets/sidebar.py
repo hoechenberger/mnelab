@@ -73,7 +73,9 @@ class SpanningHeaderView(QHeaderView):
         if logical_index in span_cols and logical_index != self._span_start:
             return
         if logical_index == self._span_start:
-            total_width = sum(self.sectionSize(self._span_start + i) for i in range(self._span_count))
+            total_width = sum(
+                self.sectionSize(self._span_start + i) for i in range(self._span_count)
+            )
             rect = QRect(rect.x(), rect.y(), total_width, rect.height())
         super().paintSection(painter, rect, logical_index)
 
@@ -99,7 +101,9 @@ class SidebarTableWidget(QTableWidget):
         self.setShowGrid(False)
         self.drop_row = -1
 
-        header = SpanningHeaderView(Qt.Horizontal, span_start=1, span_count=3, parent=self)
+        header = SpanningHeaderView(
+            Qt.Horizontal, span_start=1, span_count=3, parent=self
+        )
         self.setHorizontalHeader(header)
         self.setHorizontalHeaderLabels(["#", "Dataset", "", ""])
         self.horizontalHeaderItem(0).setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
