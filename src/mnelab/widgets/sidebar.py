@@ -2,8 +2,6 @@
 #
 # License: BSD (3-clause)
 
-import sys
-
 from PySide6.QtCore import QEvent, QRect, QRectF, QSize, Qt, Signal
 from PySide6.QtGui import QColor, QIcon, QPainter
 from PySide6.QtWidgets import (
@@ -95,7 +93,6 @@ class SidebarTableWidget(QTableWidget):
         self.setDropIndicatorShown(False)
         self.setDragDropOverwriteMode(False)
         self.setFrameStyle(QFrame.NoFrame)
-        self.setFocusPolicy(Qt.NoFocus)
         self.setEditTriggers(QAbstractItemView.DoubleClicked)
         self.setColumnCount(4)
         self.setShowGrid(False)
@@ -118,15 +115,6 @@ class SidebarTableWidget(QTableWidget):
         self.setColumnWidth(3, 22)
         self.resizeColumnToContents(0)
         self.setItemDelegateForColumn(2, TypeBadgeDelegate(self))
-
-        if sys.platform == "darwin":
-            self.setStyleSheet("""
-                QTableWidget::item:selected {
-                    background-color: palette(highlight);
-                    color: palette(highlighted-text);
-                }
-            """)
-
         self.setMouseTracking(True)
         self.viewport().installEventFilter(self)
 
@@ -237,6 +225,7 @@ class SidebarTableWidget(QTableWidget):
         for i in range(self.rowCount()):
             if i == row_index:
                 delete_button = QToolButton(self)
+                delete_button.setFocusPolicy(Qt.NoFocus)
                 delete_button.setIcon(QIcon.fromTheme("close-data"))
                 delete_button.setIconSize(QSize(20, 20))
                 delete_button.setAutoRaise(True)
