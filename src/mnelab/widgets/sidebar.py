@@ -44,6 +44,10 @@ class TypeBadgeDelegate(QStyledItemDelegate):
         painter.setBrush(QColor(bg_hex))
         painter.drawRoundedRect(badge_rect, badge_h / 2, badge_h / 2)
 
+        painter.setPen(QColor(0, 0, 0, 40))
+        painter.setBrush(Qt.NoBrush)
+        painter.drawRoundedRect(badge_rect, badge_h / 2, badge_h / 2)
+
         font = painter.font()
         font.setPointSizeF(max(6.0, font.pointSizeF() - 1))
         painter.setFont(font)
