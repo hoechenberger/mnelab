@@ -3,7 +3,7 @@
 # License: BSD (3-clause)
 
 from PySide6.QtCore import QEvent, QRect, QRectF, QSize, Qt, Signal
-from PySide6.QtGui import QColor, QIcon, QPainter
+from PySide6.QtGui import QColor, QCursor, QIcon, QPainter
 from PySide6.QtWidgets import (
     QAbstractItemView,
     QFrame,
@@ -205,6 +205,11 @@ class SidebarTableWidget(QTableWidget):
             self.item(i, 1).setFlags(self.item(i, 1).flags() | Qt.ItemIsEditable)
             if self.item(i, 2) is not None:
                 self.item(i, 2).setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable)
+        # After a rebuild (e.g. row removed), the cursor may already be hovering
+        # over a row without a MouseMove firing — update the close button immediately.
+        pos = self.viewport().mapFromGlobal(QCursor.pos())
+        index = self.indexAt(pos)
+        self.showCloseButton(index.row() if index.isValid() else -1)
 
     def update_vertical_header(self):
         row_count = self.rowCount()
