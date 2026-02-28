@@ -105,6 +105,7 @@ class InfoWidget(QWidget):
                 self.grid.addWidget(right, row, 1)
                 if key == "File name" and value != "-":
                     btn = QToolButton()
+                    btn.setMaximumHeight(left.sizeHint().height())
                     btn.setIcon(QIcon())  # empty until hovered
                     btn.setAutoRaise(True)
                     btn.setStyleSheet("""
