@@ -116,6 +116,7 @@ class SidebarTableWidget(QTableWidget):
         self.resizeColumnToContents(0)
         self.setItemDelegateForColumn(2, TypeBadgeDelegate(self))
         self.setMouseTracking(True)
+        self.setTabKeyNavigation(False)
         self.viewport().installEventFilter(self)
 
     def mousePressEvent(self, event):
