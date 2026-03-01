@@ -7,9 +7,6 @@
 - Fix toolbar button hover effects on macOS ([#565](https://github.com/cbrnr/mnelab/pull/565) by [Clemens Brunner](https://github.com/cbrnr))
 - The dataset sidebar now contains badges that help you easily recognize the data type of each entry ([#576](https://github.com/cbrnr/mnelab/pull/576) by [Richard Höchenberger](https://github.com/hoechenberger))
 - Navigation between datasets by using the arrow up and down keys in the sidebar ([#573](https://github.com/cbrnr/mnelab/pull/573) by [Richard Höchenberger](https://github.com/hoechenberger))
-
-### 🔧 Fixed
-- Fix toolbar button hover effects on macOS ([#565](https://github.com/cbrnr/mnelab/pull/565) by [Clemens Brunner](https://github.com/cbrnr))
 - Improve dataset sidebar styling on macOS ([#573](https://github.com/cbrnr/mnelab/pull/573) by [Richard Höchenberger](https://github.com/hoechenberger))
 
 ## [1.3.1] · 2026-02-25
