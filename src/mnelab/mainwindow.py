@@ -512,7 +512,7 @@ class MainWindow(QMainWindow):
             self.sidebar.show()
             self.sidebar.setRowCount(0)
             self.sidebar.setRowCount(len(self.model.names))
-            self.sidebar.setColumnCount(3)
+            self.sidebar.setColumnCount(4)
 
             for row_index, name in enumerate(self.model.names):
                 item_index = QTableWidgetItem(str(row_index))
@@ -521,6 +521,9 @@ class MainWindow(QMainWindow):
                 item_name = QTableWidgetItem(name)
                 item_name.setFlags(item_name.flags() | Qt.ItemIsEditable)
                 self.sidebar.setItem(row_index, 1, item_name)
+
+                dtype = self.model.data[row_index]["dtype"] or ""
+                self.sidebar.set_dtype(row_index, dtype)
 
             self.sidebar.style_rows()
             self.sidebar.selectRow(self.model.index)

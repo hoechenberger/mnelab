@@ -1,4 +1,8 @@
 ## [UNRELEASED] · YYYY-MM-DD
+### ✨ Added
+- The dataset pane now contains badges that help you easily recognize the data type of each entry ([#576](https://github.com/cbrnr/mnelab/pull/576) by [Richard Höchenberger](https://github.com/hoechenberger))
+- The info pane now displays a copy button when hovering over the file name ([#578](https://github.com/cbrnr/mnelab/pull/578) by [Richard Höchenberger](https://github.com/hoechenberger))
+
 ### 🔧 Fixed
 - Fix toolbar button hover effects on macOS ([#565](https://github.com/cbrnr/mnelab/pull/565) by [Clemens Brunner](https://github.com/cbrnr))
 - Gracefully shut down when `Ctrl-C` is pressed in the terminal ([#575](https://github.com/cbrnr/mnelab/pull/575) by [Richard Höchenberger](https://github.com/hoechenberger))
