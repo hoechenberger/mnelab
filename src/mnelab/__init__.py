@@ -19,6 +19,8 @@ try:
 except PackageNotFoundError:
     __version__ = "unknown"
 
+IS_DEV_VERSION = __version__.split(".")[-1].startswith("dev")
+
 
 def main():
     mp.freeze_support()
@@ -76,10 +78,11 @@ def main():
     # Allow Ctrl-C in the terminal to shut the app down gracefully. Qt's C++
     # event loop doesn't yield to Python's signal machinery on its own, so a
     # short-interval no-op timer is used to wake the loop periodically and let
-    # Python check for pending signals.
-    signal.signal(signal.SIGINT, lambda *_: app.quit())
-    sigint_timer = QTimer()
-    sigint_timer.start(200)
-    sigint_timer.timeout.connect(lambda: None)
+    # Python check for pending signals. Only enabled for development versions.
+    if IS_DEV_VERSION:
+        signal.signal(signal.SIGINT, lambda *_: app.quit())
+        sigint_timer = QTimer()
+        sigint_timer.start(200)
+        sigint_timer.timeout.connect(lambda: None)
 
     sys.exit(app.exec())

@@ -62,7 +62,7 @@ class InfoWidget(QWidget):
     """
 
     def __init__(self, values=None):
-        from .. import __version__
+        from .. import IS_DEV_VERSION
 
         super().__init__()
         self._copy_btn = None
@@ -83,7 +83,7 @@ class InfoWidget(QWidget):
         vbox.addLayout(self.grid)
         vbox.addStretch(1)
         self.set_values(values)
-        if __version__.split(".")[-1].startswith("dev"):
+        if IS_DEV_VERSION:
             vbox.addStretch()
             vbox.addWidget(QLabel(dev_label))
 
@@ -169,7 +169,7 @@ class InfoWidget(QWidget):
 
 class EmptyWidget(QWidget):
     def __init__(self, actions):
-        from .. import __version__
+        from .. import IS_DEV_VERSION
 
         super().__init__()
         text = QLabel(_make_shortcuts_table(actions))
@@ -177,5 +177,5 @@ class EmptyWidget(QWidget):
         vbox.addStretch()
         vbox.addWidget(text)
         vbox.addStretch()
-        if __version__.split(".")[-1].startswith("dev"):
+        if IS_DEV_VERSION:
             vbox.addWidget(QLabel(dev_label))
