@@ -509,8 +509,8 @@ class MainWindow(QMainWindow):
         # update sidebar
         if len(self.model.data) > 0:
             self.sidebar.show()
-            # Block signals during rebuild: setRowCount(0) would otherwise
-            # emit currentCellChanged with row=-1, corrupting model.index.
+            # block signals during rebuild: setRowCount(0) would otherwise
+            # emit currentCellChanged with row=-1, corrupting model.index
             self.sidebar.blockSignals(True)
             self.sidebar.setRowCount(0)
             self.sidebar.setRowCount(len(self.model.names))
