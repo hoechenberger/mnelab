@@ -44,6 +44,8 @@ class TypeBadgeDelegate(QStyledItemDelegate):
         painter.setBrush(QColor(bg_hex))
         painter.drawRoundedRect(badge_rect, badge_h / 2, badge_h / 2)
 
+        # add a subtle border to make the badge stand out against similar background
+        # colors
         painter.setPen(QColor(0, 0, 0, 40))
         painter.setBrush(Qt.NoBrush)
         painter.drawRoundedRect(badge_rect, badge_h / 2, badge_h / 2)
@@ -209,8 +211,8 @@ class SidebarTableWidget(QTableWidget):
             self.item(i, 1).setFlags(self.item(i, 1).flags() | Qt.ItemIsEditable)
             if self.item(i, 2) is not None:
                 self.item(i, 2).setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable)
-        # After a rebuild (e.g. row removed), the cursor may already be hovering
-        # over a row without a MouseMove firing — update the close button immediately.
+        # after a rebuild (e.g. row removed), the cursor may already be hovering
+        # over a row without a MouseMove firing — update the close button immediately
         pos = self.viewport().mapFromGlobal(QCursor.pos())
         index = self.indexAt(pos)
         self.showCloseButton(index.row() if index.isValid() else -1)
@@ -237,7 +239,7 @@ class SidebarTableWidget(QTableWidget):
                 delete_button = QToolButton(self)
                 delete_button.setFocusPolicy(Qt.NoFocus)
                 delete_button.setIcon(QIcon.fromTheme("close-data"))
-                delete_button.setIconSize(QSize(20, 20))
+                delete_button.setToolTip("Close dataset")
                 delete_button.setAutoRaise(True)
                 delete_button.setToolTip("Remove dataset")
                 delete_button.setStyleSheet(
