@@ -241,7 +241,7 @@ class SidebarTableWidget(QTableWidget):
                 delete_button.setIcon(QIcon.fromTheme("close-data"))
                 delete_button.setToolTip("Close dataset")
                 delete_button.setAutoRaise(True)
-                delete_button.setToolTip("Remove dataset")
+                delete_button.setToolTip("Close dataset")
                 delete_button.setStyleSheet(
                     "QToolButton { background: transparent; border: none; }"
                 )
