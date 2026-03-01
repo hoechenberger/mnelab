@@ -2,7 +2,7 @@
 #
 # License: BSD (3-clause)
 
-from PySide6.QtCore import QEvent, QRect, QRectF, QSize, Qt, Signal
+from PySide6.QtCore import QEvent, QRect, QRectF, Qt, Signal
 from PySide6.QtGui import QColor, QCursor, QIcon, QPainter
 from PySide6.QtWidgets import (
     QAbstractItemView,
