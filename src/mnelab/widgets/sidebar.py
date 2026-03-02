@@ -2,6 +2,8 @@
 #
 # License: BSD (3-clause)
 
+import sys
+
 from PySide6.QtCore import QEvent, QRect, QRectF, Qt, Signal
 from PySide6.QtGui import QColor, QCursor, QIcon, QPainter
 from PySide6.QtWidgets import (
@@ -108,6 +110,15 @@ class SidebarTableWidget(QTableWidget):
         self.setEditTriggers(QAbstractItemView.DoubleClicked)
         self.setColumnCount(4)
         self.setShowGrid(False)
+        if sys.platform != "darwin":
+            # disable cell style changes upon focusing (clicking); not needed on macOS
+            self.setStyleSheet("""
+                QTableWidget { outline: 0; }
+                QTableWidget::item:focus {
+                    background: palette(highlight);
+                    color: palette(highlighted-text);
+                }
+            """)
         self.drop_row = -1
 
         header = SpanningHeaderView(
