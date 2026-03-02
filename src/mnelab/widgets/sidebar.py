@@ -16,9 +16,15 @@ from PySide6.QtWidgets import (
 
 ROW_HEIGHT = 30
 
+# settings for the data type badges in the sidebar
 DTYPE_COLORS = {
     "raw": ("#2563EB", "#FFFFFF"),  # blue-600 bg, white text
     "epochs": ("#92400E", "#FFFFFF"),  # amber-800 bg, white text
+}
+
+DTYPE_LABELS = {
+    "raw": "raw",
+    "epochs": "epo",
 }
 
 
@@ -30,15 +36,15 @@ class TypeBadgeDelegate(QStyledItemDelegate):
         if not dtype:
             return
         bg_hex, fg_hex = DTYPE_COLORS.get(dtype.lower(), ("#6B7280", "#FFFFFF"))
-        label = dtype.capitalize()
+        label = DTYPE_LABELS.get(dtype.lower(), dtype.lower())
 
         painter.save()
         painter.setRenderHint(QPainter.Antialiasing)
 
         rect = option.rect
-        pad_y = 5
+        pad_y = 7
         badge_h = rect.height() - 2 * pad_y
-        badge_rect = QRectF(rect.x() + 2, rect.y() + pad_y, rect.width() - 4, badge_h)
+        badge_rect = QRectF(rect.x() + 1, rect.y() + pad_y, rect.width() - 2, badge_h)
 
         painter.setPen(Qt.NoPen)
         painter.setBrush(QColor(bg_hex))
@@ -60,7 +66,7 @@ class TypeBadgeDelegate(QStyledItemDelegate):
 
     def sizeHint(self, option, index):
         hint = super().sizeHint(option, index)
-        hint.setWidth(56)
+        hint.setWidth(42)
         return hint
 
 
@@ -117,10 +123,12 @@ class SidebarTableWidget(QTableWidget):
         self.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
         self.horizontalHeader().setSectionResizeMode(2, QHeaderView.Fixed)
         self.horizontalHeader().setSectionResizeMode(3, QHeaderView.Fixed)
-        self.setColumnWidth(2, 56)
-        self.setColumnWidth(3, 22)
+        self.setColumnWidth(2, 42)
+        self.setColumnWidth(3, 24)
         self.resizeColumnToContents(0)
         self.setItemDelegateForColumn(2, TypeBadgeDelegate(self))
+        self.horizontalHeader().hide()
+        self.setAccessibleName("Opened datasets")
         self.setMouseTracking(True)
         self.setTabKeyNavigation(False)
         self.viewport().installEventFilter(self)
@@ -238,10 +246,10 @@ class SidebarTableWidget(QTableWidget):
             if i == row_index:
                 delete_button = QToolButton(self)
                 delete_button.setFocusPolicy(Qt.NoFocus)
+                delete_button.setFixedSize(24, ROW_HEIGHT)
                 delete_button.setIcon(QIcon.fromTheme("close-data"))
                 delete_button.setToolTip("Close dataset")
                 delete_button.setAutoRaise(True)
-                delete_button.setToolTip("Close dataset")
                 delete_button.setStyleSheet(
                     "QToolButton { background: transparent; border: none; }"
                 )

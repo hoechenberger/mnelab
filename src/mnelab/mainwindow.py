@@ -16,7 +16,16 @@ import mne
 import numpy as np
 from mne import channel_type
 from pybvrf import read_bvrf_header
-from PySide6.QtCore import QEvent, QMetaObject, QModelIndex, Qt, QUrl, Slot
+from PySide6.QtCore import (
+    QByteArray,
+    QEvent,
+    QMetaObject,
+    QModelIndex,
+    Qt,
+    QTimer,
+    QUrl,
+    Slot,
+)
 from PySide6.QtGui import QAction, QDesktopServices, QIcon, QKeySequence
 from PySide6.QtWidgets import (
     QApplication,
@@ -430,8 +439,9 @@ class MainWindow(QMainWindow):
             lambda row, col, *_: self._update_data(row, col)
         )
 
-        splitter = QSplitter()
-        splitter.addWidget(self.sidebar)
+        self.splitter = QSplitter()
+        self.splitter.setObjectName("main_splitter")
+        self.splitter.addWidget(self.sidebar)
 
         self.infowidget = QStackedWidget()
         self.infowidget.addWidget(InfoWidget())
@@ -439,10 +449,21 @@ class MainWindow(QMainWindow):
             itemgetter("open_file", "history", "settings")(self.actions)
         )
         self.infowidget.addWidget(emptywidget)
-        splitter.addWidget(self.infowidget)
-        width = splitter.size().width()
-        splitter.setSizes((int(width * 0.3), int(width * 0.7)))
-        self.setCentralWidget(splitter)
+        self.splitter.addWidget(self.infowidget)
+        saved_splitter = settings["splitter"]
+        if saved_splitter:
+            self.splitter.restoreState(saved_splitter)
+        else:
+            QTimer.singleShot(
+                0,
+                lambda: self.splitter.setSizes(
+                    [
+                        int(self.splitter.size().width() * 0.50),
+                        int(self.splitter.size().width() * 0.50),
+                    ]
+                ),
+            )
+        self.setCentralWidget(self.splitter)
 
         self.status_label = QLabel()
         self.statusBar().addPermanentWidget(self.status_label)
@@ -1608,7 +1629,11 @@ class MainWindow(QMainWindow):
 
     def event(self, event):
         if event.type() == QEvent.Close:
-            write_settings(size=self.size(), pos=self.pos())
+            write_settings(
+                size=self.size(),
+                pos=self.pos(),
+                splitter=QByteArray(self.splitter.saveState()),
+            )
             if self.model.history:
                 print("\n# Command History\n")
                 print(format_code("\n".join(self.model.history)))
