@@ -1572,7 +1572,6 @@ class MainWindow(QMainWindow):
         if row != self.model.index:
             self.model.index = row
             self.data_changed()
-            self.sidebar.showCloseButton(row)
             self.model.history.append(f"data = datasets[{self.model.index}]")
 
     @Slot()
